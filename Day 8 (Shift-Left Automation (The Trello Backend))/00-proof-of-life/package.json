@@ -3,13 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "log-username": "tsx src/scripts/log-trello-username.ts",
+    "create-board": "tsx src/scripts/create-board-list-card.ts",
+    "test": "playwright test",
+    "test:full-workflow": "playwright test tests/trello-full-workflow.spec.ts --project=chromium",
+    "test:full-workflow:ui": "playwright test tests/trello-full-workflow.spec.ts --project=chromium --headed --ui",
+    "test:visual": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed",
+    "test:visual:ui": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:ui": "playwright test --ui",
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.9"
+    "@types/node": "^25.0.9",
+    "tsx": "^4.21.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
