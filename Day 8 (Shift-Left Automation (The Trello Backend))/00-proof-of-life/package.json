@@ -1,31 +1,36 @@
 {
-  "name": "00-proof-of-life",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "log-username": "tsx src/scripts/log-trello-username.ts",
-    "create-board": "tsx src/scripts/create-board-list-card.ts",
-    "test": "playwright test",
-    "test:full-workflow": "playwright test tests/trello-full-workflow.spec.ts --project=chromium",
-    "test:full-workflow:ui": "playwright test tests/trello-full-workflow.spec.ts --project=chromium --headed --ui",
-    "test:visual": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed",
-    "test:visual:ui": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed --ui",
-    "test:chromium": "playwright test --project=chromium",
-    "test:ui": "playwright test --ui",
-    "build": "tsc",
-    "clean": "rm -rf dist"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.9",
-    "tsx": "^4.21.0"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.3"
-  }
+	"name": "00-proof-of-life",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"log-username": "tsx src/scripts/log-trello-username.ts",
+		"create-board": "tsx src/scripts/create-board-list-card.ts",
+		"test": "playwright test",
+		"test:full-workflow": "playwright test tests/trello-full-workflow.spec.ts --project=chromium",
+		"test:full-workflow:ui": "playwright test tests/trello-full-workflow.spec.ts --project=chromium --headed --ui",
+		"test:visual": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed",
+		"test:visual:ui": "playwright test tests/trello-full-workflow-visual.spec.ts --project=chromium --headed --ui",
+		"test:chromium": "playwright test --project=chromium",
+		"test:ui": "playwright test --ui",
+		"test:edge-cases": "playwright test tests/trello-edge-cases.spec.ts --project=chromium",
+		"test:edge-cases:headed": "playwright test tests/trello-edge-cases.spec.ts --project=chromium --headed",
+		"test:edge-cases:category": "playwright test tests/trello-edge-cases.spec.ts --grep 'Category-Based' --project=chromium",
+		"test:edge-cases:individual": "playwright test tests/trello-edge-cases.spec.ts --grep 'Nasty Strings' --project=chromium",
+		"test:edge-cases:stress": "playwright test tests/trello-edge-cases.spec.ts --grep 'Stress Testing' --project=chromium",
+		"build": "tsc",
+		"clean": "rm -rf dist"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"devDependencies": {
+		"@playwright/test": "^1.57.0",
+		"@types/node": "^25.0.9",
+		"tsx": "^4.21.0"
+	},
+	"dependencies": {
+		"dotenv": "^17.2.3"
+	}
 }

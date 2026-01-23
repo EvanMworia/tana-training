@@ -1,4 +1,5 @@
-import { Page, Locator } from '@playwright/test';
+// src/pages/BoardPage.ts
+import { Page, Locator, expect } from '@playwright/test';
 
 /**
  * Page Object Model for Trello Board Page
@@ -24,21 +25,28 @@ export class BoardPage {
 	 * @param boardId - The board ID
 	 */
 	async goto(boardId: string) {
-		await this.page.goto(`https://trello.com/b/${boardId}`, { waitUntil: 'networkidle' });
+		// Use 'load' instead of 'networkidle' - Trello has constant network activity
+		await this.page.goto(`https://trello.com/b/${boardId}`, {
+			waitUntil: 'load',
+			timeout: 60000, // 60 seconds timeout
+		});
+
+		// Wait for the board to be interactive
+		await this.waitForLoad();
 	}
 
 	/**
 	 * Wait for board to load
 	 */
 	async waitForLoad() {
-		await this.boardNameDisplay.waitFor({ state: 'visible', timeout: 10000 });
+		await this.boardNameDisplay.waitFor({ state: 'visible', timeout: 30000 });
 	}
 
 	/**
 	 * Get the board name displayed on the page
 	 */
 	async getBoardName(): Promise<string> {
-		return await this.boardNameDisplay.textContent() || '';
+		return (await this.boardNameDisplay.textContent()) || '';
 	}
 
 	/**
@@ -56,7 +64,8 @@ export class BoardPage {
 	 * @returns Locator for the list
 	 */
 	getList(listName: string): Locator {
-		return this.page.getByRole('region', { name: new RegExp(listName, 'i') })
+		return this.page
+			.getByRole('region', { name: new RegExp(listName, 'i') })
 			.or(this.page.locator(`[data-testid="list"]:has-text("${listName}")`))
 			.or(this.page.locator(`.list:has-text("${listName}")`));
 	}
@@ -118,7 +127,7 @@ export class BoardPage {
 	async cardExists(cardName: string, listName?: string): Promise<boolean> {
 		try {
 			let cardLocator: Locator;
-			
+
 			if (listName) {
 				// Search within a specific list
 				const list = this.getList(listName);
@@ -127,7 +136,7 @@ export class BoardPage {
 				// Search anywhere on the board
 				cardLocator = this.page.getByRole('link', { name: cardName });
 			}
-			
+
 			await cardLocator.waitFor({ state: 'visible', timeout: 5000 });
 			return true;
 		} catch (error) {
@@ -142,14 +151,14 @@ export class BoardPage {
 	 */
 	async assertCardExists(cardName: string, listName?: string) {
 		let cardLocator: Locator;
-		
+
 		if (listName) {
 			const list = this.getList(listName);
 			cardLocator = list.getByRole('link', { name: cardName });
 		} else {
 			cardLocator = this.page.getByRole('link', { name: cardName });
 		}
-		
+
 		await expect(cardLocator).toBeVisible({ timeout: 10000 });
 		console.log(`✅ Card "${cardName}" found${listName ? ` in list "${listName}"` : ' on board'}`);
 	}
@@ -158,7 +167,7 @@ export class BoardPage {
 	 * Refresh the page to see latest changes
 	 */
 	async refresh() {
-		await this.page.reload({ waitUntil: 'networkidle' });
+		await this.page.reload({ waitUntil: 'load', timeout: 60000 });
 		await this.waitForLoad();
 	}
 }
